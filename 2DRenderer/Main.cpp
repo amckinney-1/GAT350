@@ -27,10 +27,47 @@ int main(int, char**)
 		}
 
 		framebuffer->Clear({ 0, 0, 0, 255 });
-		for (int i = 0; i < 100; i++)
-		{
-			framebuffer->DrawPoint(rand() % framebuffer->width, rand() % framebuffer->height, { 255, 255, 255, 255 });
-		}
+
+        for (int i = 0; i < 25; i++)
+        {
+            framebuffer->DrawPoint(rand() % framebuffer->width, rand() % framebuffer->height, { 0, 255, 0, 0 });
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            framebuffer->DrawRect(rand() % framebuffer->width, rand() % framebuffer->height, 20, 20, { 0, 0, 255, 0 });
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            framebuffer->DrawLine(framebuffer->width >> 1, framebuffer->height >> 1, rand() % framebuffer->width, rand() % framebuffer->height, { 255, 255, 255, 0 });
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            framebuffer->DrawTriangle(rand() % framebuffer->width, rand() % framebuffer->height, rand() % framebuffer->width, rand() % framebuffer->height, rand() % framebuffer->width, rand() % framebuffer->height, { 255, 0, 0, 0 });
+        }
+        for (int i = 0; i < 1; i++)
+        {
+            framebuffer->DrawCircle(rand() % framebuffer->width, rand() % framebuffer->height, rand() % 10, { 255, 0, 255, 0 });
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            framebuffer->DrawQuadraticCurve(
+                rand() % framebuffer->width, rand() % framebuffer->height,
+                rand() % framebuffer->width, rand() % framebuffer->height,
+                rand() % framebuffer->width, rand() % framebuffer->height, 30, { 255, 255, 0, 255 });
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            framebuffer->DrawCubicCurve(
+                rand() % framebuffer->width, rand() % framebuffer->height,
+                rand() % framebuffer->width, rand() % framebuffer->height,
+                rand() % framebuffer->width, rand() % framebuffer->height,
+                rand() % framebuffer->width, rand() % framebuffer->height,
+                30, { 0, 255, 255, 255 });
+        }
+
+        // Keeps the circle from breaking everything
+        char s{ 'S' };
+        std::cin >> s;
 
 		framebuffer->Update();
 		renderer->CopyBuffer(framebuffer.get());
