@@ -181,7 +181,12 @@ void Framebuffer::DrawCircle(int cx, int cy, int radius, const color_t& color)
 
 void Framebuffer::DrawCircleOctants(int cx, int cy, int x, int y, const color_t& color)
 {
-    DrawPoint(cx + x, cy + y, color);
+    DrawLine(cx - x, cy + y, cx + x, cy + y, color);
+    DrawLine(cx - x, cy - y, cx + x, cy - y, color);
+    DrawLine(cx - y, cy + x, cx + y, cy + x, color);
+    DrawLine(cx - y, cy - x, cx + y, cy - x, color);
+
+    /*DrawPoint(cx + x, cy + y, color);
     DrawPoint(cx + x, cy - y, color);
     DrawPoint(cx - x, cy + y, color);
     DrawPoint(cx - x, cy - y, color);
@@ -189,7 +194,7 @@ void Framebuffer::DrawCircleOctants(int cx, int cy, int x, int y, const color_t&
     DrawPoint(cx + y, cy + x, color);
     DrawPoint(cx + y, cy - x, color);
     DrawPoint(cx - y, cy + x, color);
-    DrawPoint(cx - y, cy - x, color);
+    DrawPoint(cx - y, cy - x, color);*/
 }
 
 void Framebuffer::DrawSimpleCurve(int x1, int y1, int x2, int y2, int steps, const color_t& color)
