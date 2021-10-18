@@ -1,5 +1,7 @@
 #include "Renderer.h"
 #include "Framebuffer.h"
+#include "PostProcess.h"
+#include "Image.h"
 
 #include <iostream>
 #include <SDL.h>
@@ -30,49 +32,59 @@ int main(int, char**)
 
         for (int i = 0; i < 25; i++)
         {
-            framebuffer->DrawPoint(rand() % framebuffer->width, rand() % framebuffer->height, { 0, 255, 0, 0 });
+            framebuffer->DrawPoint(rand() % renderer->width, rand() % renderer->height, { 0, 255, 0, 0 });
         }
         for (int i = 0; i < 10; i++)
         {
-            framebuffer->DrawRect(rand() % framebuffer->width, rand() % framebuffer->height, 20, 20, { 0, 0, 255, 0 });
+            framebuffer->DrawRect(rand() % renderer->width, rand() % renderer->height, 20, 20, { 0, 0, 255, 0 });
         }
         for (int i = 0; i < 10; i++)
         {
-            framebuffer->DrawLine(framebuffer->width >> 1, framebuffer->height >> 1, rand() % framebuffer->width, rand() % framebuffer->height, { 255, 255, 255, 0 });
+            framebuffer->DrawLine(renderer->width >> 1, renderer->height >> 1, rand() % renderer->width, rand() % renderer->height, { 255, 255, 255, 0 });
         }
         for (int i = 0; i < 5; i++)
         {
-            framebuffer->DrawTriangle(rand() % framebuffer->width, rand() % framebuffer->height, rand() % framebuffer->width, rand() % framebuffer->height, rand() % framebuffer->width, rand() % framebuffer->height, { 255, 0, 0, 0 });
+            framebuffer->DrawTriangle(rand() % renderer->width, rand() % renderer->height, rand() % renderer->width, rand() % renderer->height, rand() % renderer->width, rand() % renderer->height, { 255, 0, 0, 0 });
         }
-        for (int i = 0; i < 1; i++)
+        /*for (int i = 0; i < 1; i++)
         {
-            framebuffer->DrawCircle(rand() % framebuffer->width, rand() % framebuffer->height, rand() % 10, { 255, 0, 255, 0 });
-        }
+            framebuffer->DrawCircle(rand() % renderer->width, rand() % renderer->height, rand() % 10, { 255, 0, 255, 0 });
+        }*/
         for (int i = 0; i < 3; i++)
         {
             framebuffer->DrawQuadraticCurve(
-                rand() % framebuffer->width, rand() % framebuffer->height,
-                rand() % framebuffer->width, rand() % framebuffer->height,
-                rand() % framebuffer->width, rand() % framebuffer->height, 30, { 255, 255, 0, 255 });
+                rand() % renderer->width, rand() % renderer->height,
+                rand() % renderer->width, rand() % renderer->height,
+                rand() % renderer->width, rand() % renderer->height, 30, { 255, 255, 0, 255 });
         }
         for (int i = 0; i < 3; i++)
         {
             framebuffer->DrawCubicCurve(
-                rand() % framebuffer->width, rand() % framebuffer->height,
-                rand() % framebuffer->width, rand() % framebuffer->height,
-                rand() % framebuffer->width, rand() % framebuffer->height,
-                rand() % framebuffer->width, rand() % framebuffer->height,
+                rand() % renderer->width, rand() % renderer->height,
+                rand() % renderer->width, rand() % renderer->height,
+                rand() % renderer->width, rand() % renderer->height,
+                rand() % renderer->width, rand() % renderer->height,
                 30, { 0, 255, 255, 255 });
         }
 
-        // Keeps the circle from breaking everything
-        char s{ 'S' };
-        std::cin >> s;
+        //nPostProcess::Invert(framebuffer->colorBuffer);
+        //nPostProcess::Monochrome(framebuffer->colorBuffer);
+        //nPostProcess::Noise(framebuffer->colorBuffer, 30);
+
+        std::unique_ptr<Image> image = std::make_unique<Image>();
+        image->Load("../resources/cat.bmp");
+        image->Flip();
+
+        framebuffer->DrawImage(30, 30, image.get());
 
 		framebuffer->Update();
 		renderer->CopyBuffer(framebuffer.get());
 
 		renderer->Present();
+
+        // Keeps the circle from breaking everything
+        /*char s{ 'S' };
+        std::cin >> s;*/
 	}
 
 	SDL_Quit();
