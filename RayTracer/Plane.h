@@ -1,7 +1,6 @@
 #pragma once
 #include "Geometry.h"
 
-class ray_t;
 class Plane : public Geometry
 {
 public:
