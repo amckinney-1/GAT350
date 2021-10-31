@@ -13,8 +13,18 @@ glm::vec3 Scene::Trace(const ray_t& r, float tMin, float tMax, raycastHit_t& hit
         }
     }
 
-    if (rayHit) return glm::vec3{ 1, 0, 0 };
-    return glm::vec3{ 0, 0, 0 };
+    if (rayHit)
+    {
+        ray_t scattered;
+        glm::vec3 attenuation;
+
+        if (hit.material->Scatter(r, hit, attenuation, scattered)) return attenuation * Trace(scattered, tMin, tMax, hit);
+        else return { 0, 0, 0 };
+    }
+
+    glm::vec3 direction = glm::normalize(r.direction);
+    float t = (direction.y + 1) * 0.5f;
+    return glm::lerp(glm::vec3(0.5f, 0.7f, 1.0f), glm::vec3(1, 1, 1), t);
 }
 
 void Scene::Add(std::unique_ptr<Geometry> geometry)
