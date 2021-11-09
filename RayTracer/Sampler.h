@@ -2,7 +2,6 @@
 #include "Types.h"
 
 class Image;
-
 class Sampler
 {
 public:

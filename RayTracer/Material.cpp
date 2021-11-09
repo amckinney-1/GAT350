@@ -28,8 +28,8 @@ bool Dielectric::Scatter(const ray_t& ray, const raycastHit_t& hit, glm::vec3& a
 
 	glm::vec3 refracted;
 	glm::vec3 normal;
-	float cosine{ 0.0f };
-	float refractionRatio{ 1.0f };
+	float cosine;
+	float refractionRatio;
 
 	// check if ray is hitting the inside of the surface or from the outside, adjust values
 	if (dot(ray.direction, hit.normal) > 0)
@@ -37,7 +37,14 @@ bool Dielectric::Scatter(const ray_t& ray, const raycastHit_t& hit, glm::vec3& a
 		// ray hits inside of surface
 		normal = -hit.normal;
 		refractionRatio = refractionIndex;
-		cosine = -glm::dot(ray.direction, hit.normal) / ray.direction.length();
+		cosine = refractionIndex * dot(ray.direction,hit.normal) / ray.direction.length();
+	}
+	else
+	{
+		// ray hits outside of surface
+		normal = hit.normal;
+		refractionRatio = 1.0f / refractionIndex;
+		cosine = -dot(ray.direction, hit.normal) / ray.direction.length();
 	}
 
 	float reflectProbability = 1.0f;
